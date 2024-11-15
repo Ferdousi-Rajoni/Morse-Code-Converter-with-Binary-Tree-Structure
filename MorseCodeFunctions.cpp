@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <cctype>  // For toupper function
 
 // Insert a letter into the Morse code tree based on its code
 void insert_morse_code(BTNode<char>* root, char letter, const std::string& code) {
@@ -17,6 +18,7 @@ void insert_morse_code(BTNode<char>* root, char letter, const std::string& code)
         }
     }
     current->data = letter;
+    std::cout << "Inserted letter: " << letter << " at position: " << code << std::endl;
 }
 
 // Build the Morse code tree from a file
@@ -39,14 +41,40 @@ Binary_Tree<char> build_morse_tree(const std::string& filename) {
 }
 
 // Find Morse code for a given letter
-std::string find_morse_code(BTNode<char>* node, char target_letter) {
-    if (!node) return "";
-    if (node->data == target_letter) return "";
-    std::string left_result = find_morse_code(node->left, target_letter);
-    if (!left_result.empty()) return "." + left_result;
-    std::string right_result = find_morse_code(node->right, target_letter);
-    if (!right_result.empty()) return "-" + right_result;
-    return "";
+bool find_morse_code(BTNode<char>* node, char target_letter, std::string& code) {
+    if (!node) return false;
+    if (node->data == target_letter) return true;
+
+    // Check left (dot)
+    code.push_back('.');
+    if (find_morse_code(node->left, target_letter, code)) return true;
+    code.pop_back();
+
+    // Check right (dash)
+    code.push_back('-');
+    if (find_morse_code(node->right, target_letter, code)) return true;
+    code.pop_back();
+
+    return false;
+}
+
+// Encode a message into Morse code
+std::string encode_message(BTNode<char>* root, const std::string& message) {
+    std::string encoded_message;
+    for (char c : message) {
+        if (c != ' ') {
+            char upper_c = toupper(c);  // Convert to uppercase
+            std::string morse_code;
+            if (find_morse_code(root, upper_c, morse_code)) {
+                encoded_message += morse_code + " ";
+            } else {
+                std::cerr << "Error: Morse code not found for character: " << c << std::endl;
+            }
+        } else {
+            encoded_message += "  ";  // Double space for spaces between words
+        }
+    }
+    return encoded_message;
 }
 
 // Find the letter for a given Morse code sequence
@@ -58,24 +86,6 @@ char find_letter(BTNode<char>* node, const std::string& code) {
         if (!current) return '\0';
     }
     return current->data;
-}
-
-// Encode a message into Morse code
-std::string encode_message(BTNode<char>* root, const std::string& message) {
-    std::string encoded_message;
-    for (char c : message) {
-        if (c != ' ') {
-            std::string morse_code = find_morse_code(root, toupper(c));
-            if (!morse_code.empty()) {
-                encoded_message += morse_code + " ";
-            } else {
-                std::cerr << "Error: Morse code not found for character: " << c << std::endl;
-            }
-        } else {
-            encoded_message += "  ";  // Double space for spaces between words
-        }
-    }
-    return encoded_message;
 }
 
 // Decode a Morse code message back to text
