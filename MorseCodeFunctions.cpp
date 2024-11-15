@@ -32,7 +32,7 @@ Binary_Tree<char> build_morse_tree(const std::string& filename) {
     std::string line;
     while (std::getline(infile, line)) {
         if (line.empty()) continue;
-        char letter = line[0];
+        char letter = line[0];  // The letter (lowercase)
         std::string code = line.substr(2);  // Morse code part (skip first 2 characters: letter and space)
         insert_morse_code(root, letter, code);
     }
@@ -63,9 +63,9 @@ std::string encode_message(BTNode<char>* root, const std::string& message) {
     std::string encoded_message;
     for (char c : message) {
         if (c != ' ') {
-            char upper_c = toupper(c);  // Convert to uppercase
+            char lower_c = tolower(c);  // Convert to lowercase for encoding
             std::string morse_code;
-            if (find_morse_code(root, upper_c, morse_code)) {
+            if (find_morse_code(root, lower_c, morse_code)) {  // Use lower_c for finding Morse code
                 encoded_message += morse_code + " ";
             } else {
                 std::cerr << "Error: Morse code not found for character: " << c << std::endl;
@@ -76,6 +76,7 @@ std::string encode_message(BTNode<char>* root, const std::string& message) {
     }
     return encoded_message;
 }
+
 
 // Find the letter for a given Morse code sequence
 char find_letter(BTNode<char>* node, const std::string& code) {
@@ -121,4 +122,3 @@ std::string decode_message(BTNode<char>* root, const std::string& coded_message)
     }
     return decoded_message;
 }
-
