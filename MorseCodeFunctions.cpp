@@ -17,6 +17,7 @@ void insert_morse_code(BTNode<char>* root, char letter, const std::string& code)
         }
     }
     current->data = letter;
+    std::cout << "Inserted letter: " << letter << " at position: " << code << std::endl;  // Debugging
 }
 
 // Build the Morse code tree from a file
@@ -29,12 +30,13 @@ Binary_Tree<char> build_morse_tree(const std::string& filename) {
     }
     std::string line;
     while (std::getline(infile, line)) {
+        if (line.empty()) continue;
         char letter = line[0];
-        std::string code = line.substr(2);
+        std::string code = line.substr(2);  // Morse code part (skip first 2 characters: letter and space)
+        std::cout << "Inserting letter: " << letter << " with Morse code: " << code << std::endl;
         insert_morse_code(root, letter, code);
     }
     infile.close();
-   // return Binary_Tree<char>(root);
     return Binary_Tree<char>(root);
 }
 
@@ -66,9 +68,10 @@ std::string encode_message(BTNode<char>* root, const std::string& message) {
     for (char c : message) {
         if (c != ' ') {
             std::string morse_code = find_morse_code(root, toupper(c));
+            std::cout << "Encoding character: " << c << " to Morse code: " << morse_code << std::endl;
             if (!morse_code.empty()) encoded_message += morse_code + " ";
         } else {
-            encoded_message += "  ";
+            encoded_message += "  ";  // Double space for spaces between words
         }
     }
     return encoded_message;
@@ -81,6 +84,7 @@ std::string decode_message(BTNode<char>* root, const std::string& coded_message)
     std::string code;
     while (stream >> code) {
         char letter = find_letter(root, code);
+        std::cout << "Decoding Morse code: " << code << " to letter: " << letter << std::endl;
         if (letter != '\0') decoded_message += letter;
     }
     return decoded_message;
