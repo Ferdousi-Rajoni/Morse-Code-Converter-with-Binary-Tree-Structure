@@ -7,21 +7,10 @@
  *          and decode Morse code back into text. The program also builds a binary tree representation 
  *          of Morse code using a provided file and provides utilities to handle encoding and decoding.
  *
- * Functionality:
- * - `insert_morse_code`: Inserts a letter into the Morse code binary tree based on its code.
- * - `build_morse_tree`: Constructs a binary tree for Morse code using a data file.
- * - `find_morse_code`: Recursively finds the Morse code for a given character.
- * - `encode_message`: Encodes a given text message into Morse code.
- * - `find_letter`: Finds the character for a given Morse code sequence by traversing the tree.
- * - `decode_message`: Decodes a Morse code message back into plain text, handling spaces between words.
- *
- * Notes:
- * - The program assumes the input Morse code file contains lowercase letters and their corresponding Morse code.
- * - The message for encoding/decoding is case-insensitive.
- * - Word boundaries in Morse code are handled by recognizing double spaces during decoding.
+ * File Dependencies:
+ * - `MorseCodeFunctions.h`: Header file containing function declarations.
+ * - `Binary_Tree.h`: Provides the Binary Tree data structure, specifically the `BTNode` template class.
  */
-
-
 
 #include "MorseCodeFunctions.h"
 #include "Binary_Tree.h"
@@ -31,6 +20,11 @@
 #include <cctype>  // For toupper function
 
 // Insert a letter into the Morse code tree based on its code
+// Parameters:
+//   - root: The root node of the binary tree.
+//   - letter: The letter to insert.
+//   - code: The Morse code for the letter (string of '.' and '-').
+// Side Effect: The binary tree is updated with the new letter at the appropriate position.
 void insert_morse_code(BTNode<char>* root, char letter, const std::string& code) {
     BTNode<char>* current = root;
     for (char symbol : code) {
@@ -47,6 +41,11 @@ void insert_morse_code(BTNode<char>* root, char letter, const std::string& code)
 }
 
 // Build the Morse code tree from a file
+// Parameters:
+//   - filename: The name of the file containing Morse code mappings.
+// Returns: A `Binary_Tree` object representing the constructed Morse code tree.
+// Side Effect: The binary tree is built by reading the file, where each line corresponds to a letter 
+//   and its Morse code.
 Binary_Tree<char> build_morse_tree(const std::string& filename) {
     BTNode<char>* root = new BTNode<char>('*');
     std::ifstream infile(filename);
@@ -66,6 +65,12 @@ Binary_Tree<char> build_morse_tree(const std::string& filename) {
 }
 
 // Find Morse code for a given letter
+// Parameters:
+//   - node: The current node of the tree to check.
+//   - target_letter: The letter to find the Morse code for.
+//   - code: A reference to a string that will store the Morse code for the target letter.
+// Returns: `true` if the Morse code is found, `false` otherwise.
+// Side Effect: The `code` string is updated with the Morse code for the target letter if found.
 bool find_morse_code(BTNode<char>* node, char target_letter, std::string& code) {
     if (!node) return false;
     if (node->data == target_letter) return true;
@@ -84,6 +89,11 @@ bool find_morse_code(BTNode<char>* node, char target_letter, std::string& code) 
 }
 
 // Encode a message into Morse code
+// Parameters:
+//   - root: The root of the Morse code binary tree.
+//   - message: The message to encode.
+// Returns: A string containing the encoded Morse code with word boundaries represented by double spaces.
+// Side Effect: If a character is not found in the tree, an error message is printed.
 std::string encode_message(BTNode<char>* root, const std::string& message) {
     std::string encoded_message;
     for (char c : message) {
@@ -102,8 +112,11 @@ std::string encode_message(BTNode<char>* root, const std::string& message) {
     return encoded_message;
 }
 
-
 // Find the letter for a given Morse code sequence
+// Parameters:
+//   - node: The current node of the Morse code binary tree.
+//   - code: The Morse code sequence to decode.
+// Returns: The letter corresponding to the code, or `'\0'` if not found.
 char find_letter(BTNode<char>* node, const std::string& code) {
     BTNode<char>* current = node;
     for (char symbol : code) {
@@ -115,34 +128,23 @@ char find_letter(BTNode<char>* node, const std::string& code) {
 }
 
 // Decode a Morse code message back to text
+// Parameters:
+//   - root: The root of the Morse code binary tree.
+//   - coded_message: The encoded Morse code message to decode.
+// Returns: A string containing the decoded message in plain text.
+// Side Effect: If an invalid Morse code is encountered, an error message is printed. Word boundaries are 
+//   handled by recognizing double spaces between words.
 std::string decode_message(BTNode<char>* root, const std::string& coded_message) {
     std::string decoded_message;
     std::istringstream stream(coded_message);
-    std::string code;
-    bool word_boundary = false;
-
-    while (stream >> code) {
-        // Check if we've hit a double space (word boundary)
-        if (word_boundary) {
-            decoded_message += ' ';  // Add space between words
-            word_boundary = false;   // Reset word boundary
-        }
-
-        // Decode individual Morse code to a letter
-        char letter = find_letter(root, code);
-        if (letter != '\0') {
-            decoded_message += letter;
+    std::string morse_code;
+    while (stream >> morse_code) {
+        if (morse_code == "  ") {
+            decoded_message += ' ';  // Word boundary
         } else {
-            std::cerr << "Error: Letter not found for Morse code: " << code << std::endl;
-        }
-
-        // Check if there's a double space after the current code segment
-        if (stream.peek() == ' ') {
-            stream.get();  // Consume the first space
-            if (stream.peek() == ' ') {
-                stream.get();  // Consume the second space
-                word_boundary = true;  // Set word boundary for the next iteration
-            }
+            char letter = find_letter(root, morse_code);
+            if (letter != '\0') decoded_message += letter;
+            else std::cerr << "Error: Invalid Morse code encountered: " << morse_code << std::endl;
         }
     }
     return decoded_message;
