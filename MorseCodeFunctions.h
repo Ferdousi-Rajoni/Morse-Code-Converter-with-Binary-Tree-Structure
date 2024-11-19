@@ -1,3 +1,16 @@
+/*
+ * MorseCodeFunctions.h
+ * Module: Morse Code Encoder and Decoder
+ * Author: Jannatul Ferdousi Rajoni
+ * Date: 15/11/24
+ * Purpose: This header file declares functions and data structures for encoding, decoding, 
+ * and constructing a Morse code binary tree. It provides the necessary declarations 
+ * to facilitate the encoding of messages into Morse code and the decoding of Morse code back into text.
+ */
+
+
+
+
 #ifndef MORSECODEFUNCTIONS_H
 #define MORSECODEFUNCTIONS_H
 
