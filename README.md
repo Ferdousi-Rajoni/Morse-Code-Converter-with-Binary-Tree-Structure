@@ -21,7 +21,7 @@ This program implements a Morse Code Encoder and Decoder using a binary tree dat
 - **MorseCodeFunctions.cpp**: Implementation file with definitions for encoding, decoding, and tree-building functions.
 - **Binary_Tree.h**: Header file for the binary tree structure.
 - **BTNode.h**: Header file for the binary tree node structure.
-- **morse_data.txt**: A text file containing Morse code mappings for letters (e.g., `a .-`).
+- **morse_code.txt**: A text file containing Morse code mappings for letters (e.g., `a .-`).
 - **main.cpp**: Entry point for the program to demonstrate functionality.
 
 ## Features
@@ -39,19 +39,13 @@ This program implements a Morse Code Encoder and Decoder using a binary tree dat
 - Handles spaces between words and errors for unrecognized codes.
 
 ### 4. File Input
-- Reads Morse code mappings from a file (e.g., `morse_data.txt`) to build the tree.
+- Reads Morse code mappings from a file (e.g., `morse_code.txt`) to build the tree.
 
 ## Compilation and Execution
 ### Compilation
 To compile the program, use the following command:
 ```
 g++ -o MorseCodeApp main.cpp MorseCodeFunctions.cpp
-```
-
-### Execution
-Run the program using:
-```
-./MorseCodeApp
 ```
 
 ###  Input and Output
@@ -64,7 +58,7 @@ Run the program using:
    - Output: `hello world`
 
 ## File Format for Morse Data
-The `morse_data.txt` file should have the following format:
+The `morse_code.txt` file should have the following format:
 ```
 a .-
 b -...
@@ -74,7 +68,7 @@ c -.-.
 Each line represents a letter and its corresponding Morse code, separated by a space.
 
 ## Notes
-- Ensure the `morse_data.txt` file is in the same directory as the executable.
+- Ensure the `morse_code.txt` file is in the same directory as the executable.
 - The program supports case-insensitive input for encoding and decoding.
 
 ## Limitations
