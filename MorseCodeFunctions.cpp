@@ -1,3 +1,28 @@
+/*
+ * MorseCodeFunctions.cpp
+ * Module: Morse Code Encoder and Decoder
+ * Author: Jannatul Ferdousi Rajoni
+ * Date: 15/11/24
+ * Purpose: This implementation file contains the functions required to encode messages into Morse code 
+ *          and decode Morse code back into text. The program also builds a binary tree representation 
+ *          of Morse code using a provided file and provides utilities to handle encoding and decoding.
+ *
+ * Functionality:
+ * - `insert_morse_code`: Inserts a letter into the Morse code binary tree based on its code.
+ * - `build_morse_tree`: Constructs a binary tree for Morse code using a data file.
+ * - `find_morse_code`: Recursively finds the Morse code for a given character.
+ * - `encode_message`: Encodes a given text message into Morse code.
+ * - `find_letter`: Finds the character for a given Morse code sequence by traversing the tree.
+ * - `decode_message`: Decodes a Morse code message back into plain text, handling spaces between words.
+ *
+ * Notes:
+ * - The program assumes the input Morse code file contains lowercase letters and their corresponding Morse code.
+ * - The message for encoding/decoding is case-insensitive.
+ * - Word boundaries in Morse code are handled by recognizing double spaces during decoding.
+ */
+
+
+
 #include "MorseCodeFunctions.h"
 #include "Binary_Tree.h"
 #include <iostream>
