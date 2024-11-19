@@ -8,11 +8,20 @@
  * The program runs interactively, accepting user input for encoding and decoding operations.
  */
 
-
 #include <iostream>
 #include "Binary_Tree.h"
 #include "MorseCodeFunctions.h"
 
+/**
+ * Function Name: main
+ * Purpose: The main entry point for the Morse Code Encoder and Decoder program.
+ *          This function initializes the Morse code binary tree, processes user input,
+ *          encodes a text message into Morse code, and decodes a Morse code message back into text.
+ * Parameter(s): N/A
+ * Precondition(s): A valid "morse_code.txt" file must be present in the working directory.
+ * Returns: 0 on successful program execution.
+ * Side Effect: Reads the "morse_code.txt" file and performs encoding/decoding operations.
+ */
 int main() {
     // Create the Morse code binary tree from the file
     std::string filename = "morse_code.txt";  // Morse code data file
